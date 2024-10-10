@@ -43,3 +43,9 @@ val inter = FontFamily(
     Font(R.font.inter_medium, FontWeight.Medium),
     Font(R.font.inter_regular, FontWeight.Normal),
 )
+
+val buttonStyle = TextStyle(
+    fontFamily = inter,
+    fontWeight = FontWeight.Bold,
+    fontSize = 18.sp,
+)
