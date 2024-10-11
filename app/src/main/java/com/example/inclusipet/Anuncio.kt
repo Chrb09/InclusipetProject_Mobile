@@ -15,11 +15,17 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.AddCircle
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.outlined.AccountCircle
+import androidx.compose.material.icons.outlined.AddCircle
+import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -28,150 +34,95 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.example.inclusipet.ui.theme.InclusipetTheme
 import com.example.inclusipet.ui.theme.Purple100
 import com.example.inclusipet.ui.theme.buttonStyle
 import com.example.inclusipet.ui.theme.labelStyle
-import com.example.inclusipet.ui.theme.titleCenterStyle
-import com.example.inclusipet.ui.theme.topBarStyle
+import com.example.inclusipet.ui.theme.titleStyle
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Cadastro(navController: NavController, modifier: Modifier = Modifier) {
-    var email by remember{
-        mutableStateOf("")
-    }
-    var senha by remember{
-        mutableStateOf("")
-    }
-    var nome by remember{
-        mutableStateOf("")
-    }
-    var datanasc by remember{
-        mutableStateOf("")
-    }
-    var cpf by remember{
-        mutableStateOf("")
-    }
-    var telefone by remember{
-        mutableStateOf("")
-    }
-    var endereco by remember{
-        mutableStateOf("")
-    }
+fun Anuncio(navController: NavController, modifier: Modifier = Modifier, index: Int) {
     InclusipetTheme(darkTheme = false, dynamicColor = false) {
         val layoutDirection = LocalLayoutDirection.current
+        var nome by remember{
+            mutableStateOf("")
+        }
+        var idade by remember{
+            mutableStateOf("")
+        }
+        var especie by remember{
+            mutableStateOf("")
+        }
+        var porte by remember{
+            mutableStateOf("")
+        }
+        var sexo by remember{
+            mutableStateOf("")
+        }
+        var castrado by remember{
+            mutableStateOf("")
+        }
+        var descricao by remember{
+            mutableStateOf("")
+        }
+
         Scaffold(
             modifier = Modifier
                 .fillMaxSize()
                 .statusBarsPadding(),
             topBar = {
                 TopAppBar(
-                    windowInsets = WindowInsets(10.dp, 30.dp, 10.dp, 5.dp),
+                    windowInsets = WindowInsets(10.dp, 60.dp, 10.dp, 5.dp),
                     title = {
                         Text(
-                        text = "Cadastro",
-                            style = topBarStyle
+                        text = "Novo Anúncio",
+                            style = titleStyle
                         )
-                    },
-                    navigationIcon = {
-                        IconButton(onClick = { navController.navigate(Routes.index) }) {
-                            Icon(
-                                imageVector = Icons.Default.ArrowBack,
-                                tint = colorResource(R.color.white),
-                                contentDescription = "Voltar"
-                            )
-                        }
                     },
                     actions = {
                         Image(
-                            painter = painterResource(R.drawable.inclusipet_topbar),
+                            painter = painterResource(R.drawable.inclusipet_header),
                             modifier = Modifier.size(70.dp).padding(end = 20.dp, bottom = 10.dp),
                             contentDescription = null,
                         )
                     },
-                    colors = TopAppBarDefaults.topAppBarColors(colorResource(R.color.purple_100))
                 )
+            },
+            bottomBar = {
+                TabView(navController, index)
             }
         ) {
             it.calculateTopPadding()
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(30.dp,75.dp,30.dp, 40.dp)
+                    .padding(30.dp,90.dp,30.dp, 40.dp)
                     .verticalScroll(rememberScrollState()),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
 
             ) {
                 Column(
-                    modifier = Modifier.padding(0.dp, 20.dp, 0.dp, 25.dp),
+                    modifier = Modifier.padding(0.dp, 30.dp, 0.dp, 110.dp),
                     verticalArrangement = Arrangement.spacedBy(17.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Text(
-                        text = "Crie sua conta",
-                        style = titleCenterStyle,
-                        )
-                    Column(
-                        verticalArrangement = Arrangement.spacedBy(4.dp),
-                    ) {
-                        Text(
-                            modifier = Modifier.fillMaxWidth(),
-                            text = "Email",
-                            style = labelStyle
-                        )
-                        BasicTextField(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .border(
-                                    width = 2.5.dp,
-                                    color = colorResource(R.color.purple_100),
-                                    shape = RoundedCornerShape(14.dp)
-                                )
-                                .padding(20.dp, 12.dp),
-                            value = email,
-                            onValueChange = { email = it},
-                            textStyle = labelStyle,
-                            singleLine = true,
-                            cursorBrush = Brush.verticalGradient(listOf(Purple100, Purple100)),
-                        )
-                    }
-                    Column(
-                        verticalArrangement = Arrangement.spacedBy(4.dp),
-                    ) {
-                        Text(
-                            modifier = Modifier.fillMaxWidth(),
-                            text = "Senha",
-                            style = labelStyle
-                        )
-                        BasicTextField(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .border(
-                                    width = 2.5.dp,
-                                    color = colorResource(R.color.purple_100),
-                                    shape = RoundedCornerShape(14.dp)
-                                )
-                                .padding(20.dp, 12.dp),
-                            value = senha,
-                            onValueChange = { senha = it},
-                            textStyle = labelStyle,
-                            singleLine = true,
-                            cursorBrush = Brush.verticalGradient(listOf(Purple100, Purple100)),
-                            visualTransformation = PasswordVisualTransformation(),
-                        )
-                    }
                     Column(
                         verticalArrangement = Arrangement.spacedBy(4.dp),
                     ) {
@@ -201,7 +152,7 @@ fun Cadastro(navController: NavController, modifier: Modifier = Modifier) {
                     ) {
                         Text(
                             modifier = Modifier.fillMaxWidth(),
-                            text = "Data Nascimento",
+                            text = "Idade",
                             style = labelStyle
                         )
                         BasicTextField(
@@ -213,8 +164,8 @@ fun Cadastro(navController: NavController, modifier: Modifier = Modifier) {
                                     shape = RoundedCornerShape(14.dp)
                                 )
                                 .padding(20.dp, 12.dp),
-                            value = datanasc,
-                            onValueChange = { datanasc = it},
+                            value = idade,
+                            onValueChange = { idade = it},
                             textStyle = labelStyle,
                             singleLine = true,
                             cursorBrush = Brush.verticalGradient(listOf(Purple100, Purple100)),
@@ -225,7 +176,7 @@ fun Cadastro(navController: NavController, modifier: Modifier = Modifier) {
                     ) {
                         Text(
                             modifier = Modifier.fillMaxWidth(),
-                            text = "CPF",
+                            text = "Especie",
                             style = labelStyle
                         )
                         BasicTextField(
@@ -237,8 +188,56 @@ fun Cadastro(navController: NavController, modifier: Modifier = Modifier) {
                                     shape = RoundedCornerShape(14.dp)
                                 )
                                 .padding(20.dp, 12.dp),
-                            value = cpf,
-                            onValueChange = { cpf = it},
+                            value = especie,
+                            onValueChange = { especie = it},
+                            textStyle = labelStyle,
+                            singleLine = true,
+                            cursorBrush = Brush.verticalGradient(listOf(Purple100, Purple100)),
+                        )
+                    }
+                    Column(
+                        verticalArrangement = Arrangement.spacedBy(4.dp),
+                    ) {
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = "Porte",
+                            style = labelStyle
+                        )
+                        BasicTextField(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .border(
+                                    width = 2.5.dp,
+                                    color = colorResource(R.color.purple_100),
+                                    shape = RoundedCornerShape(14.dp)
+                                )
+                                .padding(20.dp, 12.dp),
+                            value = porte,
+                            onValueChange = { porte = it},
+                            textStyle = labelStyle,
+                            singleLine = true,
+                            cursorBrush = Brush.verticalGradient(listOf(Purple100, Purple100)),
+                        )
+                    }
+                    Column(
+                        verticalArrangement = Arrangement.spacedBy(4.dp),
+                    ) {
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = "Sexo",
+                            style = labelStyle
+                        )
+                        BasicTextField(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .border(
+                                    width = 2.5.dp,
+                                    color = colorResource(R.color.purple_100),
+                                    shape = RoundedCornerShape(14.dp)
+                                )
+                                .padding(20.dp, 12.dp),
+                            value = sexo,
+                            onValueChange = { sexo = it},
                             textStyle = labelStyle,
                             singleLine = true,
                             cursorBrush = Brush.verticalGradient(listOf(Purple100, Purple100)),
@@ -250,7 +249,7 @@ fun Cadastro(navController: NavController, modifier: Modifier = Modifier) {
                     ) {
                         Text(
                             modifier = Modifier.fillMaxWidth(),
-                            text = "Telefone",
+                            text = "Castrado?",
                             style = labelStyle
                         )
                         BasicTextField(
@@ -262,8 +261,8 @@ fun Cadastro(navController: NavController, modifier: Modifier = Modifier) {
                                     shape = RoundedCornerShape(14.dp)
                                 )
                                 .padding(20.dp, 12.dp),
-                            value = telefone,
-                            onValueChange = { telefone = it},
+                            value = castrado,
+                            onValueChange = { castrado = it},
                             textStyle = labelStyle,
                             singleLine = true,
                             cursorBrush = Brush.verticalGradient(listOf(Purple100, Purple100)),
@@ -274,7 +273,7 @@ fun Cadastro(navController: NavController, modifier: Modifier = Modifier) {
                     ) {
                         Text(
                             modifier = Modifier.fillMaxWidth(),
-                            text = "Endereço",
+                            text = "Descrição",
                             style = labelStyle
                         )
                         BasicTextField(
@@ -286,23 +285,22 @@ fun Cadastro(navController: NavController, modifier: Modifier = Modifier) {
                                     shape = RoundedCornerShape(14.dp)
                                 )
                                 .padding(20.dp, 12.dp),
-                            value = endereco,
-                            onValueChange = { endereco = it},
+                            value = descricao,
+                            onValueChange = { descricao = it},
                             textStyle = labelStyle,
-                            singleLine = true,
+                            minLines = 4,
                             cursorBrush = Brush.verticalGradient(listOf(Purple100, Purple100)),
                         )
                     }
 
                     Button(
                         onClick = {
-                            navController.navigate(Routes.adote)
                         },
                         modifier = Modifier.size(width = 200.dp, height = 48.dp),
                         shape = RoundedCornerShape(12.dp)
                     ) {
                         Text(
-                            text = "Cadastrar-se",
+                            text = "Anunciar",
                             style = buttonStyle
                         )
                     }

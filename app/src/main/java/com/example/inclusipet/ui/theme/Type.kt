@@ -55,6 +55,12 @@ val topBarStyle = TextStyle(
     color = White,
     fontWeight = FontWeight.Bold,
 )
+val bottomBarStyle = TextStyle(
+    fontFamily = inter,
+    fontSize = 12.5.sp,
+    fontWeight = FontWeight.SemiBold,
+    textAlign = TextAlign.Center
+)
 
 val labelStyle = TextStyle(
     fontFamily = inter,

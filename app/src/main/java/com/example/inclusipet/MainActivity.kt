@@ -28,6 +28,15 @@ class MainActivity : ComponentActivity() {
                 composable(Routes.cadastro){
                     Cadastro(navController)
                 }
+                composable(Routes.adote){
+                    Adote(navController, index = 0)
+                }
+                composable(Routes.anuncio){
+                    Anuncio(navController, index = 1)
+                }
+                composable(Routes.perfil){
+                    Perfil(navController, index = 2)
+                }
             }
         }
     }
