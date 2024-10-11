@@ -5,9 +5,9 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import com.example.inclusipet.R
-
 
 
 // Set of Material typography styles to start with
@@ -48,4 +48,34 @@ val buttonStyle = TextStyle(
     fontFamily = inter,
     fontWeight = FontWeight.Bold,
     fontSize = 18.sp,
+)
+val topBarStyle = TextStyle(
+    fontFamily = inter,
+    fontSize = 18.5.sp,
+    color = White,
+    fontWeight = FontWeight.Bold,
+)
+
+val labelStyle = TextStyle(
+    fontFamily = inter,
+    fontSize = 19.sp,
+    color = Grey400,
+    fontWeight = FontWeight.Medium,
+    textAlign = TextAlign.Left
+)
+
+val titleCenterStyle = TextStyle(
+    fontFamily = inter,
+    fontSize = 30.sp,
+    color = Purple100,
+    fontWeight = FontWeight.Bold,
+    textAlign = TextAlign.Center
+)
+
+val titleStyle = TextStyle(
+    fontFamily = inter,
+    fontSize = 30.sp,
+    color = Purple100,
+    fontWeight = FontWeight.Bold,
+    textAlign = TextAlign.Left
 )
