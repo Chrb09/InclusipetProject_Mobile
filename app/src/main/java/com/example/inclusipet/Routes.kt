@@ -5,7 +5,7 @@ object Routes {
     var login = "login"
     var cadastro = "cadastro"
     var adote = "Adote"
-    var informacoes = "Informacoes"
+    var info = "info"
     var anuncio = "Novo Anuncio"
     var perfil = "Perfil"
 }

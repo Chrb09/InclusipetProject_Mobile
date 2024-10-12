@@ -31,9 +31,6 @@ class MainActivity : ComponentActivity() {
                 composable(Routes.adote){
                     Adote(navController, index = 0)
                 }
-                composable(Routes.informacoes){
-                    Informacoes(navController, index = 0)
-                }
                 composable(Routes.anuncio){
                     Anuncio(navController, index = 1)
                 }
