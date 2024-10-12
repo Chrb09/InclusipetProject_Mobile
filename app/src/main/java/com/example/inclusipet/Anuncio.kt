@@ -119,7 +119,7 @@ fun Anuncio(navController: NavController, modifier: Modifier = Modifier, index: 
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .border(
-                                    width = 2.5.dp,
+                                    width = 2.dp,
                                     color = colorResource(R.color.purple_100),
                                     shape = RoundedCornerShape(14.dp)
                                 )
@@ -143,7 +143,7 @@ fun Anuncio(navController: NavController, modifier: Modifier = Modifier, index: 
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .border(
-                                    width = 2.5.dp,
+                                    width = 2.dp,
                                     color = colorResource(R.color.purple_100),
                                     shape = RoundedCornerShape(14.dp)
                                 )
@@ -167,7 +167,7 @@ fun Anuncio(navController: NavController, modifier: Modifier = Modifier, index: 
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .border(
-                                    width = 2.5.dp,
+                                    width = 2.dp,
                                     color = colorResource(R.color.purple_100),
                                     shape = RoundedCornerShape(14.dp)
                                 )
@@ -191,7 +191,7 @@ fun Anuncio(navController: NavController, modifier: Modifier = Modifier, index: 
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .border(
-                                    width = 2.5.dp,
+                                    width = 2.dp,
                                     color = colorResource(R.color.purple_100),
                                     shape = RoundedCornerShape(14.dp)
                                 )
@@ -215,7 +215,7 @@ fun Anuncio(navController: NavController, modifier: Modifier = Modifier, index: 
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .border(
-                                    width = 2.5.dp,
+                                    width = 2.dp,
                                     color = colorResource(R.color.purple_100),
                                     shape = RoundedCornerShape(14.dp)
                                 )
@@ -240,7 +240,7 @@ fun Anuncio(navController: NavController, modifier: Modifier = Modifier, index: 
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .border(
-                                    width = 2.5.dp,
+                                    width = 2.dp,
                                     color = colorResource(R.color.purple_100),
                                     shape = RoundedCornerShape(14.dp)
                                 )
@@ -264,7 +264,7 @@ fun Anuncio(navController: NavController, modifier: Modifier = Modifier, index: 
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .border(
-                                    width = 2.5.dp,
+                                    width = 2.dp,
                                     color = colorResource(R.color.purple_100),
                                     shape = RoundedCornerShape(14.dp)
                                 )
@@ -280,7 +280,7 @@ fun Anuncio(navController: NavController, modifier: Modifier = Modifier, index: 
                     Button(
                         onClick = {
                         },
-                        modifier = Modifier.size(width = 200.dp, height = 42.dp),
+                        modifier = Modifier.size(width = 180.dp, height = 38.dp),
                         shape = RoundedCornerShape(12.dp)
                     ) {
                         Text(

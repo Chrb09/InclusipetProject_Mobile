@@ -325,7 +325,7 @@ fun adoptCard(nome: String, endereco: String, descricao: String, idade: String, 
                         text = idade,
                         style = TextStyle(
                             color = colorResource(R.color.purple_100),
-                            fontSize = 14.sp,
+                            fontSize = 12.sp,
                             fontFamily = inter,
                             fontWeight = FontWeight.SemiBold
                             )
@@ -343,7 +343,7 @@ fun adoptCard(nome: String, endereco: String, descricao: String, idade: String, 
                         text = sexo,
                         style = TextStyle(
                             color = colorResource(R.color.purple_100),
-                            fontSize = 14.sp,
+                            fontSize = 12.sp,
                             fontFamily = inter,
                             fontWeight = FontWeight.SemiBold
                         )
@@ -361,7 +361,7 @@ fun adoptCard(nome: String, endereco: String, descricao: String, idade: String, 
                         text = castrado,
                         style = TextStyle(
                             color = colorResource(R.color.purple_100),
-                            fontSize = 14.sp,
+                            fontSize = 12.sp,
                             fontFamily = inter,
                             fontWeight = FontWeight.SemiBold
                         )

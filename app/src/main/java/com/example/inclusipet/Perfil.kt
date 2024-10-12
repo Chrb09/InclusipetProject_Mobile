@@ -95,7 +95,7 @@ fun Perfil(navController: NavController, modifier: Modifier = Modifier, index: I
                             text = "Miguel Yudi Baba",
                             style = TextStyle(
                                 color = colorResource(R.color.grey_400),
-                                fontSize = 22.sp,
+                                fontSize = 20.sp,
                                 fontFamily = inter,
                                 fontWeight = FontWeight.Bold
                             )
@@ -152,27 +152,27 @@ fun adoptCardProfile(nome: String, descricao: String, image: Int, navController:
         )
         Text(
             text = nome,
-            fontSize = 28.sp,
+            fontSize = 24.sp,
             style = titleStyle
         )
         Text(
             text = descricao,
             style = TextStyle(
                 color = colorResource(R.color.grey_400),
-                fontSize = 15.sp,
+                fontSize = 14.sp,
                 fontFamily = inter,
                 fontWeight = FontWeight.Medium
                 )
         )
         Row(
             modifier = Modifier.padding(0.dp, 10.dp),
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
         ){
             Button(
                 onClick = {
 
                 },
-                modifier = Modifier.height(height = 42.dp),
+                modifier = Modifier.height(height = 38.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = colorResource(R.color.red),
                 ),
@@ -187,13 +187,13 @@ fun adoptCardProfile(nome: String, descricao: String, image: Int, navController:
                 onClick = {
 
                 },
-                modifier = Modifier.height(42.dp).fillMaxWidth(),
+                modifier = Modifier.height(38.dp).fillMaxWidth(),
                 shape = RoundedCornerShape(12.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = colorResource(R.color.white),
                     contentColor = colorResource(R.color.grey_100)
                 ),
-                border = BorderStroke(2.5.dp, colorResource(R.color.grey_100))
+                border = BorderStroke(2.dp, colorResource(R.color.grey_100))
             ) {
                 Text(
                     text = "Marcar como Adotado",

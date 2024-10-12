@@ -68,9 +68,9 @@ fun Index(navController: NavController, modifier: Modifier = Modifier) {
                             modifier = Modifier.weight(1f).fillMaxWidth(),
                             style = TextStyle(
                                 fontFamily = inter,
-                                fontSize = 22.sp,
+                                fontSize = 20.sp,
                                 color = colorResource(R.color.grey_400),
-                                fontWeight = FontWeight.Bold,
+                                fontWeight = FontWeight.SemiBold,
                                 textAlign = TextAlign.Center
                             ),
 
@@ -85,7 +85,7 @@ fun Index(navController: NavController, modifier: Modifier = Modifier) {
                             onClick = {
                                 navController.navigate(Routes.cadastro)
                             },
-                            modifier = Modifier.size(width = 200.dp, height = 42.dp),
+                            modifier = Modifier.size(width = 180.dp, height = 42.dp),
                             shape = RoundedCornerShape(12.dp)
                         ) {
                             Text(
@@ -97,7 +97,7 @@ fun Index(navController: NavController, modifier: Modifier = Modifier) {
                             onClick = {
                                 navController.navigate(Routes.login)
                             },
-                            modifier = Modifier.size(width = 200.dp, height = 42.dp),
+                            modifier = Modifier.size(width = 180.dp, height = 42.dp),
                             shape = RoundedCornerShape(12.dp),
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = colorResource(R.color.white),
