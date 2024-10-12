@@ -298,7 +298,7 @@ fun Cadastro(navController: NavController, modifier: Modifier = Modifier) {
                         onClick = {
                             navController.navigate(Routes.adote)
                         },
-                        modifier = Modifier.size(width = 200.dp, height = 48.dp),
+                        modifier = Modifier.size(width = 200.dp, height = 42.dp),
                         shape = RoundedCornerShape(12.dp)
                     ) {
                         Text(

@@ -20,16 +20,17 @@ class MainActivity : ComponentActivity() {
                 composable(Routes.index){
                     Index(navController)
                 }
-
                 composable(Routes.login){
                     Login(navController)
                 }
-
                 composable(Routes.cadastro){
                     Cadastro(navController)
                 }
                 composable(Routes.adote){
                     Adote(navController, index = 0)
+                }
+                composable(Routes.informacoes){
+                    Informacoes(navController, index = 0)
                 }
                 composable(Routes.anuncio){
                     Anuncio(navController, index = 1)

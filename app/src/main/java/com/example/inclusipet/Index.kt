@@ -3,17 +3,11 @@ package com.example.inclusipet
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
-import androidx.compose.foundation.layout.calculateEndPadding
-import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -84,14 +78,14 @@ fun Index(navController: NavController, modifier: Modifier = Modifier) {
                     }
                     Column(
                         modifier = Modifier.weight(1f),
-                        verticalArrangement = Arrangement.spacedBy(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(10.dp),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Button(
                             onClick = {
                                 navController.navigate(Routes.cadastro)
                             },
-                            modifier = Modifier.size(width = 200.dp, height = 48.dp),
+                            modifier = Modifier.size(width = 200.dp, height = 42.dp),
                             shape = RoundedCornerShape(12.dp)
                         ) {
                             Text(
@@ -103,13 +97,13 @@ fun Index(navController: NavController, modifier: Modifier = Modifier) {
                             onClick = {
                                 navController.navigate(Routes.login)
                             },
-                            modifier = Modifier.size(width = 200.dp, height = 48.dp),
+                            modifier = Modifier.size(width = 200.dp, height = 42.dp),
                             shape = RoundedCornerShape(12.dp),
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = colorResource(R.color.white),
                                 contentColor = colorResource(R.color.grey_100)
                             ),
-                            border = BorderStroke(2.5.dp, colorResource(R.color.grey_100))
+                            border = BorderStroke(2.dp, colorResource(R.color.grey_100))
                         ) {
                             Text(
                                 text = "Fazer Login",

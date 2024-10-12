@@ -47,24 +47,24 @@ val inter = FontFamily(
 val buttonStyle = TextStyle(
     fontFamily = inter,
     fontWeight = FontWeight.Bold,
-    fontSize = 18.sp,
+    fontSize = 15.sp,
 )
 val topBarStyle = TextStyle(
     fontFamily = inter,
-    fontSize = 18.5.sp,
+    fontSize = 18.sp,
     color = White,
     fontWeight = FontWeight.Bold,
 )
 val bottomBarStyle = TextStyle(
     fontFamily = inter,
-    fontSize = 12.5.sp,
+    fontSize = 12.sp,
     fontWeight = FontWeight.SemiBold,
     textAlign = TextAlign.Center
 )
 
 val labelStyle = TextStyle(
     fontFamily = inter,
-    fontSize = 19.sp,
+    fontSize = 18.sp,
     color = Grey400,
     fontWeight = FontWeight.Medium,
     textAlign = TextAlign.Left
@@ -72,7 +72,7 @@ val labelStyle = TextStyle(
 
 val titleCenterStyle = TextStyle(
     fontFamily = inter,
-    fontSize = 30.sp,
+    fontSize = 28.sp,
     color = Purple100,
     fontWeight = FontWeight.Bold,
     textAlign = TextAlign.Center
@@ -80,7 +80,7 @@ val titleCenterStyle = TextStyle(
 
 val titleStyle = TextStyle(
     fontFamily = inter,
-    fontSize = 30.sp,
+    fontSize = 28.sp,
     color = Purple100,
     fontWeight = FontWeight.Bold,
     textAlign = TextAlign.Left
