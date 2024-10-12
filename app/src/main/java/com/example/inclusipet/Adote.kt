@@ -35,6 +35,7 @@ import androidx.compose.material3.NavigationBarItemColors
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -99,6 +100,7 @@ fun Adote(navController: NavController, modifier: Modifier = Modifier, index: In
                             contentDescription = null,
                         )
                     },
+                    scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
                 )
             },
             bottomBar = {
