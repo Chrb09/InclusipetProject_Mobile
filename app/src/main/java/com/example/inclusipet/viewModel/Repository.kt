@@ -3,6 +3,7 @@ package com.example.inclusipet.viewModel
 import com.example.inclusipet.roomDB.Adocao
 import com.example.inclusipet.roomDB.InclusipetDataBase
 import com.example.inclusipet.roomDB.Usuario
+import com.example.inclusipet.roomDB.UsuarioDao
 import kotlinx.coroutines.flow.Flow
 
 class Repository(private val db: InclusipetDataBase) {
@@ -28,5 +29,16 @@ class Repository(private val db: InclusipetDataBase) {
 
     fun getAllUsuario() = db.usuarioDao().getAllUsuario()
 
-    fun loginUsuario(email: String, senha: String) = db.usuarioDao().loginUsuario(email, senha)
+    suspend fun loginUsuario(email: String, senha: String): List<Usuario> {
+        return db.usuarioDao().loginUsuario(email, senha)
+    }
+
+    suspend fun verificarEmail(email: String): List<Usuario>{
+        return db.usuarioDao().verificarEmail(email)
+    }
+
+    suspend fun verificarLogin(): List<Usuario>{
+        return db.usuarioDao().verificarLogin()
+    }
+
 }

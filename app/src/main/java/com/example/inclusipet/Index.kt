@@ -32,9 +32,10 @@ import androidx.navigation.NavController
 import com.example.inclusipet.ui.theme.InclusipetTheme
 import com.example.inclusipet.ui.theme.buttonStyle
 import com.example.inclusipet.ui.theme.inter
+import com.example.inclusipet.viewModel.InclusipetViewModel
 
 @Composable
-fun Index(navController: NavController, modifier: Modifier = Modifier) {
+fun Index(navController: NavController,viewModel: InclusipetViewModel, modifier: Modifier = Modifier) {
     InclusipetTheme(darkTheme = false, dynamicColor = false) {
         val layoutDirection = LocalLayoutDirection.current
         Scaffold(

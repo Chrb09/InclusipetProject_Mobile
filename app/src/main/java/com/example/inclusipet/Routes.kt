@@ -8,4 +8,5 @@ object Routes {
     var informacoes = "Informacoes"
     var anuncio = "Novo Anuncio"
     var perfil = "Perfil"
+    var loading = "Loading"
 }

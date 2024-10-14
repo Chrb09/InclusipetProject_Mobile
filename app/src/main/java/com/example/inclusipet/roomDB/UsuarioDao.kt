@@ -18,7 +18,14 @@ interface UsuarioDao{
     @Query("SELECT * FROM usuario")
     fun getAllUsuario(): Flow<List<Usuario>>
 
+    @Query("SELECT * FROM usuario WHERE email = :email")
+    suspend fun verificarEmail(email: String): List<Usuario>
+
+    @Query("SELECT * FROM usuario WHERE logado = true")
+    suspend fun verificarLogin(): List<Usuario>
+
     @Query("SELECT * FROM usuario WHERE email = :email AND senha = :senha")
-    fun loginUsuario(email: String, senha: String): Flow<List<Usuario>>
+    suspend fun loginUsuario(email: String, senha: String): List<Usuario>
+
 
 }

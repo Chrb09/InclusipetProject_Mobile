@@ -1,5 +1,6 @@
 package com.example.inclusipet
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -38,22 +39,31 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.inclusipet.roomDB.Usuario
 import com.example.inclusipet.ui.theme.InclusipetTheme
 import com.example.inclusipet.ui.theme.Purple100
 import com.example.inclusipet.ui.theme.buttonStyle
 import com.example.inclusipet.ui.theme.labelStyle
 import com.example.inclusipet.ui.theme.titleCenterStyle
 import com.example.inclusipet.ui.theme.topBarStyle
+import com.example.inclusipet.viewModel.InclusipetViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Login(navController: NavController, modifier: Modifier = Modifier) {
+fun Login(navController: NavController, viewModel: InclusipetViewModel, modifier: Modifier = Modifier, mainActivity: MainActivity) {
     var email by remember{
         mutableStateOf("")
     }
     var senha by remember{
         mutableStateOf("")
     }
+    var usuarioList by remember{
+        mutableStateOf(listOf<Usuario>())
+    }
+
     InclusipetTheme(darkTheme = false, dynamicColor = false) {
         val layoutDirection = LocalLayoutDirection.current
         Scaffold(
@@ -81,7 +91,9 @@ fun Login(navController: NavController, modifier: Modifier = Modifier) {
                     actions = {
                         Image(
                             painter = painterResource(R.drawable.inclusipet_topbar),
-                            modifier = Modifier.size(70.dp).padding(end = 20.dp, bottom = 10.dp),
+                            modifier = Modifier
+                                .size(70.dp)
+                                .padding(end = 20.dp, bottom = 10.dp),
                             contentDescription = null,
                         )
                     },
@@ -93,7 +105,7 @@ fun Login(navController: NavController, modifier: Modifier = Modifier) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(30.dp,75.dp,30.dp, 40.dp)
+                    .padding(30.dp, 75.dp, 30.dp, 40.dp)
                     .verticalScroll(rememberScrollState()),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
@@ -160,7 +172,34 @@ fun Login(navController: NavController, modifier: Modifier = Modifier) {
 
                     Button(
                         onClick = {
-                            navController.navigate(Routes.adote)
+                            if(email.isEmpty() || senha.isEmpty()){
+                                Toast.makeText(mainActivity, "Preencha todos os campos", Toast.LENGTH_SHORT).show()
+                            }else {
+                                CoroutineScope(Main).launch {
+                                    usuarioList = viewModel.loginUsuario(email, senha)
+
+                                    if (usuarioList.isNotEmpty()) {
+
+                                        val usuarioName = usuarioList[0].nome
+                                        val usuario = usuarioList[0]
+                                        usuario.logado = true
+                                        viewModel.upsertUsuario(usuario)
+                                        Toast.makeText(
+                                            mainActivity,
+                                            "Bem vindo $usuarioName",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+
+                                        navController.navigate(Routes.adote)
+                                    } else {
+                                        Toast.makeText(
+                                            mainActivity,
+                                            "Email ou senha incorretos",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    }
+                                }
+                            }
                         },
                         modifier = Modifier.size(width = 180.dp, height = 38.dp),
                         shape = RoundedCornerShape(12.dp)

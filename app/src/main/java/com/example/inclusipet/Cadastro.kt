@@ -1,5 +1,6 @@
 package com.example.inclusipet
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -26,6 +27,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -38,16 +40,22 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.inclusipet.roomDB.Usuario
 import com.example.inclusipet.ui.theme.InclusipetTheme
 import com.example.inclusipet.ui.theme.Purple100
 import com.example.inclusipet.ui.theme.buttonStyle
 import com.example.inclusipet.ui.theme.labelStyle
 import com.example.inclusipet.ui.theme.titleCenterStyle
 import com.example.inclusipet.ui.theme.topBarStyle
+import com.example.inclusipet.viewModel.InclusipetViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.launch
+import java.io.Console
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Cadastro(navController: NavController, modifier: Modifier = Modifier) {
+fun Cadastro(navController: NavController, viewModel: InclusipetViewModel, modifier: Modifier = Modifier, mainActivity: MainActivity) {
     var email by remember{
         mutableStateOf("")
     }
@@ -68,6 +76,19 @@ fun Cadastro(navController: NavController, modifier: Modifier = Modifier) {
     }
     var endereco by remember{
         mutableStateOf("")
+    }
+    var usuario = Usuario(
+        email = email,
+        senha = senha,
+        nome = nome,
+        datanasc = datanasc,
+        cpf = cpf,
+        telefone = telefone,
+        endereco = endereco,
+        logado = false
+    )
+    var usuarioList by remember{
+        mutableStateOf(listOf<Usuario>())
     }
     InclusipetTheme(darkTheme = false, dynamicColor = false) {
         val layoutDirection = LocalLayoutDirection.current
@@ -296,7 +317,28 @@ fun Cadastro(navController: NavController, modifier: Modifier = Modifier) {
 
                     Button(
                         onClick = {
-                            navController.navigate(Routes.adote)
+                            if(email.isEmpty() || senha.isEmpty() || nome.isEmpty() || datanasc.isEmpty() || cpf.isEmpty() || telefone.isEmpty() || endereco.isEmpty()){
+                                Toast.makeText(mainActivity, "Preencha todos os campos", Toast.LENGTH_SHORT).show()
+                            }else{
+                                    CoroutineScope(Main).launch {
+                                        usuarioList = viewModel.verificarEmail(email)
+
+                                        if(usuarioList.isNotEmpty()){
+                                            Toast.makeText(mainActivity, "Email já cadastrado", Toast.LENGTH_SHORT).show()
+                                        }
+                                        else{
+                                            navController.navigate(Routes.index)
+                                            Toast.makeText(mainActivity, "Cadastro realizado com sucesso!", Toast.LENGTH_SHORT).show()
+                                            viewModel.upsertUsuario(usuario)
+
+                                        }
+
+                                    }
+
+
+                                }
+
+
                         },
                         modifier = Modifier.size(width = 180.dp, height = 38.dp),
                         shape = RoundedCornerShape(12.dp)

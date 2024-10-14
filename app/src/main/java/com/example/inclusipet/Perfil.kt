@@ -1,5 +1,6 @@
 package com.example.inclusipet
 
+import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -23,6 +24,11 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -36,15 +42,43 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.inclusipet.roomDB.Usuario
 import com.example.inclusipet.ui.theme.InclusipetTheme
 import com.example.inclusipet.ui.theme.buttonStyle
 import com.example.inclusipet.ui.theme.inter
 import com.example.inclusipet.ui.theme.titleStyle
+import com.example.inclusipet.viewModel.InclusipetViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.launch
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Perfil(navController: NavController, modifier: Modifier = Modifier, index: Int) {
+fun Perfil(navController: NavController, viewModel: InclusipetViewModel, modifier: Modifier = Modifier, index: Int, mainActivity: MainActivity) {
+    var usuarioList by remember{
+        mutableStateOf(listOf<Usuario>())
+    }
+    var usuario by remember{
+        mutableStateOf(Usuario(
+            email = "",
+            senha = "",
+            nome = "",
+            datanasc = "",
+            cpf = "",
+            telefone = "",
+            endereco = "",
+            logado = false
+        ))
+    }
+    LaunchedEffect(
+        key1 = true
+    ) {
+        CoroutineScope(Main).launch {
+            usuarioList = viewModel.verificarLogin()
+            usuario = usuarioList[0]
+        }
+    }
     InclusipetTheme(darkTheme = false, dynamicColor = false) {
         val layoutDirection = LocalLayoutDirection.current
 
@@ -89,10 +123,10 @@ fun Perfil(navController: NavController, modifier: Modifier = Modifier, index: I
                     verticalArrangement = Arrangement.spacedBy(20.dp),
                 ){
                     Column(
-                        verticalArrangement = Arrangement.spacedBy(6.dp),
+                        verticalArrangement = Arrangement.spacedBy(10.dp),
                     ){
                         Text(
-                            text = "Miguel Yudi Baba",
+                            text = usuario.nome,
                             style = TextStyle(
                                 color = colorResource(R.color.grey_400),
                                 fontSize = 20.sp,
@@ -101,7 +135,7 @@ fun Perfil(navController: NavController, modifier: Modifier = Modifier, index: I
                             )
                         )
                         Text(
-                            text = "Curuça Velha - São Paulo - Sp",
+                            text = usuario.endereco,
                             style = TextStyle(
                                 color = colorResource(R.color.grey_400),
                                 fontSize = 18.sp,
@@ -110,7 +144,7 @@ fun Perfil(navController: NavController, modifier: Modifier = Modifier, index: I
                             )
                         )
                         Text(
-                            text = "(11) 96012-2357",
+                            text = usuario.telefone,
                             style = TextStyle(
                                 color = colorResource(R.color.grey_400),
                                 fontSize = 18.sp,
@@ -118,6 +152,28 @@ fun Perfil(navController: NavController, modifier: Modifier = Modifier, index: I
                                 fontWeight = FontWeight.Normal
                             )
                         )
+                        Button(
+                            onClick = {
+                                    usuario.logado = false
+                                    viewModel.upsertUsuario(usuario)
+                                    Toast.makeText(
+                                        mainActivity,
+                                        "Saindo de "+usuario.nome+"...",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                    navController.navigate(Routes.index)
+                            },
+                            modifier = Modifier.height(height = 38.dp),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = colorResource(R.color.red),
+                            ),
+                            shape = RoundedCornerShape(12.dp)
+                        ) {
+                            Text(
+                                text = "Sair",
+                                style = buttonStyle
+                            )
+                        }
                     }
                     Row(
                         verticalAlignment = Alignment.CenterVertically,

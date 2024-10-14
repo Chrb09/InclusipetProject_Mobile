@@ -56,12 +56,13 @@ import com.example.inclusipet.ui.theme.InclusipetTheme
 import com.example.inclusipet.ui.theme.inter
 import com.example.inclusipet.ui.theme.titleStyle
 import com.example.inclusipet.ui.theme.topBarStyle
+import com.example.inclusipet.viewModel.InclusipetViewModel
 import kotlin.math.absoluteValue
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Informacoes(navController: NavController, modifier: Modifier = Modifier, index: Int) {
+fun Informacoes(navController: NavController, viewModel: InclusipetViewModel, modifier: Modifier = Modifier, index: Int, mainActivity: MainActivity) {
     InclusipetTheme(darkTheme = false, dynamicColor = false) {
         val layoutDirection = LocalLayoutDirection.current
 

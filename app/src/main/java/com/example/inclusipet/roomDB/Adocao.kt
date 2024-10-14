@@ -1,5 +1,6 @@
 package com.example.inclusipet.roomDB
 
+import android.net.Uri
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -15,6 +16,8 @@ data class Adocao (
     val sexo: String,
     val castrado: Boolean,
     val descricao: String,
+    val imagens: List<Uri>,
+    var adotado: Boolean,
     val idCliente: Int,
 
     @PrimaryKey(autoGenerate = true)

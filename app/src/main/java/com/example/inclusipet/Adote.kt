@@ -1,6 +1,5 @@
 package com.example.inclusipet
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -25,8 +24,6 @@ import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.rounded.AccountCircle
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.Home
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
@@ -46,9 +43,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.drawWithCache
-import androidx.compose.ui.draw.paint
-import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -65,17 +59,15 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.inclusipet.ui.theme.GradientPurple
 import com.example.inclusipet.ui.theme.InclusipetTheme
-import com.example.inclusipet.ui.theme.Purple100
 import com.example.inclusipet.ui.theme.bottomBarStyle
-import com.example.inclusipet.ui.theme.buttonStyle
 import com.example.inclusipet.ui.theme.inter
 import com.example.inclusipet.ui.theme.titleStyle
-import com.example.inclusipet.ui.theme.topBarStyle
+import com.example.inclusipet.viewModel.InclusipetViewModel
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Adote(navController: NavController, modifier: Modifier = Modifier, index: Int) {
+fun Adote(navController: NavController, viewModel: InclusipetViewModel, modifier: Modifier = Modifier, index: Int, mainActivity: MainActivity) {
     InclusipetTheme(darkTheme = false, dynamicColor = false) {
         val layoutDirection = LocalLayoutDirection.current
 

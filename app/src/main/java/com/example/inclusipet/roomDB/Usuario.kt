@@ -14,6 +14,7 @@ data class Usuario (
     val cpf: String,
     val telefone: String,
     val endereco: String,
+    var logado: Boolean = false,
 
     @PrimaryKey(autoGenerate = true)
     val idCliente: Int = 0
