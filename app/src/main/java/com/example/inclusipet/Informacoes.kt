@@ -1,6 +1,7 @@
 package com.example.inclusipet
 
 import android.graphics.BlendMode
+import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -33,6 +34,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -49,7 +54,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.net.toUri
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
+import com.example.inclusipet.roomDB.Adocao
 import com.example.inclusipet.ui.theme.GradientPurple
 import com.example.inclusipet.ui.theme.GradientPurple50p
 import com.example.inclusipet.ui.theme.InclusipetTheme
@@ -65,7 +73,15 @@ import kotlin.math.absoluteValue
 fun Informacoes(navController: NavController, viewModel: InclusipetViewModel, modifier: Modifier = Modifier, index: Int, mainActivity: MainActivity) {
     InclusipetTheme(darkTheme = false, dynamicColor = false) {
         val layoutDirection = LocalLayoutDirection.current
+        var adocaoList by remember{
+            mutableStateOf(listOf<Adocao>())
+        }
 
+        viewModel.getAdocaoCod(viewModel.getSelectedAdocao()).observe(mainActivity) {
+            adocaoList = it
+        }
+
+        var adocao = adocaoList[0]
 
         Scaffold(
             modifier = Modifier
@@ -105,15 +121,18 @@ fun Informacoes(navController: NavController, viewModel: InclusipetViewModel, mo
         ) {
             it.calculateTopPadding()
             val photos = listOf(
-                R.drawable.info_placeholder1,
-                R.drawable.info_placeholder2,
-                R.drawable.info_placeholder3,
-                R.drawable.info_placeholder4
+                adocao.imagemUri1.toUri(),
+                adocao.imagemUri2.toUri(),
+                adocao.imagemUri3.toUri(),
+                adocao.imagemUri4.toUri()
             )
             val pagerState = rememberPagerState(
                 pageCount = {
                 4
             })
+            var selectedImageUriList by remember {
+                mutableStateOf<List<Uri>>(photos)
+            }
 
                 Column(
                     modifier = Modifier
@@ -122,13 +141,14 @@ fun Informacoes(navController: NavController, viewModel: InclusipetViewModel, mo
                         .verticalScroll(rememberScrollState()),
                     horizontalAlignment = Alignment.Start,
                 ) {
+                    /*
                     HorizontalPager(
                         modifier = Modifier.fillMaxWidth().padding(0.dp, 60.dp, 0.dp, 0.dp).height(300.dp),
                         state = pagerState,
-                        key = { photos[it] }
+                        key = { selectedImageUriList[it] }
                     ) { index ->
-                        Image(
-                            painter = painterResource(photos[index]),
+                        AsyncImage(
+                            model = selectedImageUriList[index],
                             contentDescription = null,
                             contentScale = ContentScale.Crop,
                             modifier = Modifier.fillMaxSize().drawWithCache {
@@ -151,6 +171,8 @@ fun Informacoes(navController: NavController, viewModel: InclusipetViewModel, mo
                         targetPage = pagerState.targetPage,
                         currentPageOffsetFraction = pagerState.currentPageOffsetFraction
                     )
+
+                     */
                     Column( modifier = Modifier
                         .fillMaxSize()
                         .padding(30.dp,20.dp,30.dp, 60.dp),

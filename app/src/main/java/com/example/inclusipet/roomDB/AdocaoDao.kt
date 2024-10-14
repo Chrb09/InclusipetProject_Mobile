@@ -17,7 +17,13 @@ interface AdocaoDao {
     @Query("SELECT * FROM adocao WHERE idCliente = :idCliente")
     fun getAdocaoUsuario(idCliente: Int): Flow<List<Adocao>>
 
-    @Query("SELECT * FROM adocao")
+    @Query("SELECT * FROM adocao WHERE idAdocao = :idAdocao")
+    fun getAdocaoCod(idAdocao: Int): Flow<List<Adocao>>
+
+    @Query("SELECT * FROM adocao WHERE idCliente = :idCliente AND idAdocao = :idAdocao")
+    fun getInfoAdocao(idCliente: Int, idAdocao: Int): Flow<List<Adocao>>
+
+    @Query("SELECT * FROM adocao WHERE adotado = false")
     fun getAllAdocao(): Flow<List<Adocao>>
 
 }

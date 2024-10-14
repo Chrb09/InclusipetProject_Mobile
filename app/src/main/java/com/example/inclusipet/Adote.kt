@@ -1,5 +1,6 @@
 package com.example.inclusipet
 
+import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -14,6 +15,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -56,11 +60,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.net.toUri
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
+import com.example.inclusipet.roomDB.Adocao
 import com.example.inclusipet.ui.theme.GradientPurple
 import com.example.inclusipet.ui.theme.InclusipetTheme
 import com.example.inclusipet.ui.theme.bottomBarStyle
 import com.example.inclusipet.ui.theme.inter
+import com.example.inclusipet.ui.theme.labelStyle
 import com.example.inclusipet.ui.theme.titleStyle
 import com.example.inclusipet.viewModel.InclusipetViewModel
 
@@ -68,6 +77,14 @@ import com.example.inclusipet.viewModel.InclusipetViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Adote(navController: NavController, viewModel: InclusipetViewModel, modifier: Modifier = Modifier, index: Int, mainActivity: MainActivity) {
+    var adocaoList by remember{
+        mutableStateOf(listOf<Adocao>())
+    }
+
+    viewModel.getAllAdocao().observe(mainActivity) {
+        adocaoList = it
+    }
+
     InclusipetTheme(darkTheme = false, dynamicColor = false) {
         val layoutDirection = LocalLayoutDirection.current
 
@@ -103,23 +120,29 @@ fun Adote(navController: NavController, viewModel: InclusipetViewModel, modifier
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(30.dp,115.dp,30.dp, 40.dp)
-                    .verticalScroll(rememberScrollState()),
+                    .padding(30.dp,115.dp,30.dp, 40.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(0.dp,0.dp,0.dp, 115.dp),
-                    verticalArrangement = Arrangement.spacedBy(20.dp),
-                ){
-                    adoptCard("Fonseca", "São Paulo - SP", "Um cachorro de olhos marrons claros, de porte médio, velho, de pelagem curta...", "15 Anos", "Macho", "Castrado", R.drawable.card_placeholder, navController)
-                    adoptCard("Afrodite", "São Paulo - SP", "Gata jovem de olhos azuis de pelagem dourada, nascida sem as pernas traseiras...", "7 Anos", "Fêmea", "Não Castrado", R.drawable.card_placeholder2, navController)
+                if (adocaoList.isEmpty()){
+                    Text(
+                        text = "Nenhuma adoção cadastrada!",
+                        style = labelStyle
+                    )
 
+                }else{
+                    LazyColumn(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(0.dp,0.dp,0.dp, 115.dp),
+                        verticalArrangement = Arrangement.spacedBy(20.dp),
+                    ){
+                        items(adocaoList){ adocao ->
+                            adoptCard(adocao.idAdocao, adocao.nome, adocao.endereco, adocao.descricao, adocao.idade.toString(), adocao.sexo, adocao.castrado.toString(), adocao.imagemUri1.toUri(), navController, viewModel)
+                        }
+
+                    }
+                    }
                 }
-
-            }
-
             }
         }
     }
@@ -129,6 +152,7 @@ fun TabView( navController: NavController, index: Int) {
     var selectedTabIndex by rememberSaveable {
         mutableIntStateOf(index)
     }
+
 
     NavigationBar(
         modifier = Modifier.padding(0.dp),
@@ -240,25 +264,35 @@ fun TabBarIconView(
     }
 
 @Composable
-fun adoptCard(nome: String, endereco: String, descricao: String, idade: String, sexo: String, castrado: String, image: Int, navController: NavController){
+fun adoptCard(idAdocao: Int, nome: String, endereco: String, descricao: String, idade: String, sexo: String, castrado: String, image: Uri, navController: NavController, viewModel: InclusipetViewModel){
     var sizeImage by remember { mutableStateOf(IntSize.Zero) }
+    var selectedImageUri by remember {
+        mutableStateOf<Uri?>(image)
+    }
     Box(
         modifier = Modifier.fillMaxWidth().height(450.dp)
             .clip(shape = RoundedCornerShape(15.dp))
             .clickable(
                 onClick = {
+                    viewModel.updateSelectedAdocao(idAdocao)
                     navController.navigate(Routes.informacoes)
                 }
             ),
         contentAlignment = Alignment.BottomCenter,
 
         ){
-        Image(painter = painterResource(image),
+        AsyncImage(
+            model = selectedImageUri,
             contentDescription = "",
             contentScale = ContentScale.Crop,
             modifier = Modifier.onGloballyPositioned {
                 sizeImage = it.size
-            }.fillMaxSize())
+            }.fillMaxSize()
+        )
+
+
+
+
         Box(modifier = Modifier.matchParentSize().background(
             Brush.verticalGradient(
             colors = listOf(Color.Transparent, GradientPurple),

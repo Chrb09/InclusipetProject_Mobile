@@ -1,22 +1,23 @@
 package com.example.inclusipet.roomDB
 
-import android.net.Uri
-import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import androidx.room.Relation
 
 
 @Entity
 data class Adocao (
     val nome: String,
-    val idade: Int,
+    var idade: Int,
     val especie: String,
     val porte: String,
     val sexo: String,
-    val castrado: Boolean,
+    var castrado: Boolean,
+    var endereco: String,
     val descricao: String,
-    val imagens: List<Uri>,
+    var imagemUri1: String,
+    var imagemUri2: String,
+    var imagemUri3: String,
+    var imagemUri4: String,
     var adotado: Boolean,
     val idCliente: Int,
 

@@ -18,8 +18,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
@@ -30,6 +28,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -37,9 +36,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.colorResource
@@ -47,13 +44,17 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
-import com.example.inclusipet.ui.theme.GradientPurple50p
+import com.example.inclusipet.roomDB.Adocao
+import com.example.inclusipet.roomDB.Usuario
 import com.example.inclusipet.ui.theme.InclusipetTheme
 import com.example.inclusipet.ui.theme.Purple100
 import com.example.inclusipet.ui.theme.buttonStyle
 import com.example.inclusipet.ui.theme.labelStyle
 import com.example.inclusipet.ui.theme.titleStyle
 import com.example.inclusipet.viewModel.InclusipetViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.launch
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -85,14 +86,52 @@ fun Anuncio(navController: NavController, viewModel: InclusipetViewModel, modifi
         var selectedImageUriList by remember {
             mutableStateOf<List<Uri>>(emptyList())
         }
-
         val multipleImagePickerLauncher = rememberLauncherForActivityResult(
             contract = ActivityResultContracts.PickMultipleVisualMedia(4),
             onResult = {uriList ->
                 selectedImageUriList = uriList
             }
         )
+        var usuarioList by remember{
+            mutableStateOf(listOf<Usuario>())
+        }
+        var usuario by remember{
+            mutableStateOf(Usuario(
+                email = "",
+                senha = "",
+                nome = "",
+                datanasc = "",
+                cpf = "",
+                telefone = "",
+                endereco = "",
+                logado = false
+            ))
+        }
+        LaunchedEffect(
+            key1 = true
+        ) {
+            CoroutineScope(Main).launch {
+                usuarioList = viewModel.verificarLogin()
+                usuario = usuarioList[0]
+            }
+        }
 
+        var adocao = Adocao(
+            nome = nome,
+            idade = 0,
+            especie = especie,
+            porte = porte,
+            sexo = sexo,
+            castrado = false,
+            descricao = descricao,
+            adotado = false,
+            endereco = usuario.endereco,
+            imagemUri1 = "",
+            imagemUri2 = "",
+            imagemUri3 = "",
+            imagemUri4 = "",
+            idCliente = usuario.idCliente
+        )
         Scaffold(
             modifier = Modifier
                 .fillMaxSize()
@@ -137,7 +176,7 @@ fun Anuncio(navController: NavController, viewModel: InclusipetViewModel, modifi
                     Column(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalAlignment = Alignment.Start,
-                        verticalArrangement = Arrangement.spacedBy(4.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
                         ) {
                         Button(
                             onClick = {
@@ -165,6 +204,22 @@ fun Anuncio(navController: NavController, viewModel: InclusipetViewModel, modifi
                                     contentScale = ContentScale.Crop
                                 )
                             }
+                        }
+                        Button(
+                            onClick = {
+                                Toast.makeText(
+                                    mainActivity,
+                                    ""+selectedImageUriList[0]+"",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            },
+                            modifier = Modifier.height(height = 38.dp),
+                            shape = RoundedCornerShape(12.dp)
+                        ) {
+                            Text(
+                                text = "Escolher Imagens",
+                                style = buttonStyle
+                            )
                         }
                     }
 
@@ -340,6 +395,26 @@ fun Anuncio(navController: NavController, viewModel: InclusipetViewModel, modifi
 
                     Button(
                         onClick = {
+
+                            if(nome.isEmpty() || idade.isEmpty() || especie.isEmpty() || porte.isEmpty() || sexo.isEmpty() || castrado.isEmpty() || descricao.isEmpty()){
+                                Toast.makeText(mainActivity, "Preencha todos os campos", Toast.LENGTH_SHORT).show()
+                            }else {
+                                if (selectedImageUriList.size < 4) {
+                                    Toast.makeText(mainActivity, "Selecione 4 imagens", Toast.LENGTH_SHORT).show()
+                                }else{
+                                    adocao.imagemUri1 = selectedImageUriList[0].toString()
+                                    adocao.imagemUri2 = selectedImageUriList[1].toString()
+                                    adocao.imagemUri3 = selectedImageUriList[2].toString()
+                                    adocao.imagemUri4 = selectedImageUriList[3].toString()
+                                    adocao.idade = idade.toInt()
+                                    adocao.castrado = castrado.toBoolean()
+
+
+                                    Toast.makeText(mainActivity, "Anuncio criado com sucesso!", Toast.LENGTH_SHORT).show()
+                                    viewModel.upsertAdocao(adocao)
+                                    navController.navigate(Routes.perfil)
+                                }
+                            }
                         },
                         modifier = Modifier.size(width = 180.dp, height = 38.dp),
                         shape = RoundedCornerShape(12.dp)

@@ -1,5 +1,7 @@
 package com.example.inclusipet.viewModel
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
@@ -10,8 +12,20 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class InclusipetViewModel(private val repository: Repository): ViewModel()  {
-    fun getAdocaoUsuario(idCliente: Int) = repository.getAdocaoUsuario(idCliente)
-    fun getAllAdocao() = repository.getAllAdocao()
+    private var selectedAdocao = 0
+
+    fun updateSelectedAdocao(adocao: Int) {
+        selectedAdocao = adocao
+    }
+
+    fun getSelectedAdocao(): Int {
+        return selectedAdocao
+    }
+
+    fun getAdocaoUsuario(idCliente: Int) = repository.getAdocaoUsuario(idCliente).asLiveData(viewModelScope.coroutineContext)
+    fun getAllAdocao() = repository.getAllAdocao().asLiveData(viewModelScope.coroutineContext)
+    fun getInfoAdocao(idCliente: Int, idAdocao: Int) = repository.getInfoAdocao(idCliente, idAdocao)
+    fun getAdocaoCod(idAdocao: Int) = repository.getAdocaoCod(idAdocao).asLiveData(viewModelScope.coroutineContext)
 
     fun upsertAdocao(adocao: Adocao) {
         viewModelScope.launch{

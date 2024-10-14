@@ -14,10 +14,13 @@ class Repository(private val db: InclusipetDataBase) {
     suspend fun deleteAdocao(adocao: Adocao) {
         db.adocaoDao().deleteAdocao(adocao)
     }
+    fun getInfoAdocao(idCliente: Int, idAdocao: Int) = db.adocaoDao().getInfoAdocao(idCliente, idAdocao)
 
     fun getAdocaoUsuario(idCliente: Int) = db.adocaoDao().getAdocaoUsuario(idCliente)
 
     fun getAllAdocao() = db.adocaoDao().getAllAdocao()
+
+    fun getAdocaoCod(idAdocao: Int) = db.adocaoDao().getAdocaoCod(idAdocao)
 
     suspend fun upsertUsuario(usuario: Usuario) {
         db.usuarioDao().upsertUsuario(usuario)

@@ -334,11 +334,7 @@ fun Cadastro(navController: NavController, viewModel: InclusipetViewModel, modif
                                         }
 
                                     }
-
-
                                 }
-
-
                         },
                         modifier = Modifier.size(width = 180.dp, height = 38.dp),
                         shape = RoundedCornerShape(12.dp)
