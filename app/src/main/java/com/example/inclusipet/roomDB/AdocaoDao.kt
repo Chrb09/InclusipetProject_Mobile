@@ -18,7 +18,7 @@ interface AdocaoDao {
     fun getAdocaoUsuario(idCliente: Int): Flow<List<Adocao>>
 
     @Query("SELECT * FROM adocao WHERE idAdocao = :idAdocao")
-    fun getAdocaoCod(idAdocao: Int): Flow<List<Adocao>>
+    suspend fun getAdocaoCod(idAdocao: Int): List<Adocao>
 
     @Query("SELECT * FROM adocao WHERE idCliente = :idCliente AND idAdocao = :idAdocao")
     fun getInfoAdocao(idCliente: Int, idAdocao: Int): Flow<List<Adocao>>

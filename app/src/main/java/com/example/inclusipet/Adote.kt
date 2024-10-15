@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -120,7 +121,7 @@ fun Adote(navController: NavController, viewModel: InclusipetViewModel, modifier
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(30.dp,115.dp,30.dp, 40.dp),
+                    .padding(30.dp,115.dp,30.dp, 0.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 if (adocaoList.isEmpty()){
@@ -133,13 +134,11 @@ fun Adote(navController: NavController, viewModel: InclusipetViewModel, modifier
                     LazyColumn(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(0.dp,0.dp,0.dp, 115.dp),
-                        verticalArrangement = Arrangement.spacedBy(20.dp),
+                            .padding(0.dp,0.dp,0.dp, 110.dp),
                     ){
                         items(adocaoList){ adocao ->
                             adoptCard(adocao.idAdocao, adocao.nome, adocao.endereco, adocao.descricao, adocao.idade.toString(), adocao.sexo, adocao.castrado.toString(), adocao.imagemUri1.toUri(), navController, viewModel)
                         }
-
                     }
                     }
                 }
@@ -270,7 +269,10 @@ fun adoptCard(idAdocao: Int, nome: String, endereco: String, descricao: String, 
         mutableStateOf<Uri?>(image)
     }
     Box(
-        modifier = Modifier.fillMaxWidth().height(450.dp)
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(450.dp)
+            .padding(0.dp, 0.dp, 0.dp, 30.dp)
             .clip(shape = RoundedCornerShape(15.dp))
             .clickable(
                 onClick = {
@@ -281,8 +283,8 @@ fun adoptCard(idAdocao: Int, nome: String, endereco: String, descricao: String, 
         contentAlignment = Alignment.BottomCenter,
 
         ){
-        AsyncImage(
-            model = selectedImageUri,
+        Image(
+            painter = painterResource(R.drawable.info_placeholder1),
             contentDescription = "",
             contentScale = ContentScale.Crop,
             modifier = Modifier.onGloballyPositioned {
@@ -386,7 +388,8 @@ fun adoptCard(idAdocao: Int, nome: String, endereco: String, descricao: String, 
 
                     ){
                     Text(
-                        text = castrado,
+
+                        text = if (castrado == "true") "Castrado" else "Não castrado",
                         style = TextStyle(
                             color = colorResource(R.color.purple_100),
                             fontSize = 12.sp,

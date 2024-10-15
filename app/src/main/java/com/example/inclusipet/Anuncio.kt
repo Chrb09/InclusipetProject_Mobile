@@ -6,9 +6,13 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,16 +20,27 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.Button
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -38,9 +53,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
@@ -49,6 +68,7 @@ import com.example.inclusipet.roomDB.Usuario
 import com.example.inclusipet.ui.theme.InclusipetTheme
 import com.example.inclusipet.ui.theme.Purple100
 import com.example.inclusipet.ui.theme.buttonStyle
+import com.example.inclusipet.ui.theme.inter
 import com.example.inclusipet.ui.theme.labelStyle
 import com.example.inclusipet.ui.theme.titleStyle
 import com.example.inclusipet.viewModel.InclusipetViewModel
@@ -69,16 +89,16 @@ fun Anuncio(navController: NavController, viewModel: InclusipetViewModel, modifi
             mutableStateOf("")
         }
         var especie by remember{
-            mutableStateOf("")
+            mutableStateOf("Cachorro")
         }
         var porte by remember{
-            mutableStateOf("")
+            mutableStateOf("Pequeno")
         }
         var sexo by remember{
-            mutableStateOf("")
+            mutableStateOf("Macho")
         }
         var castrado by remember{
-            mutableStateOf("")
+            mutableStateOf("Não")
         }
         var descricao by remember{
             mutableStateOf("")
@@ -107,6 +127,11 @@ fun Anuncio(navController: NavController, viewModel: InclusipetViewModel, modifi
                 logado = false
             ))
         }
+        val listaEspecie = listOf("Cachorro", "Gato", "Pássaro", "Outros")
+        val listaPorte = listOf("Pequeno", "Médio", "Grande")
+        val listaSexo = listOf("Macho", "Fêmea")
+        val listaCastrado = listOf("Não", "Sim")
+
         LaunchedEffect(
             key1 = true
         ) {
@@ -205,6 +230,7 @@ fun Anuncio(navController: NavController, viewModel: InclusipetViewModel, modifi
                                 )
                             }
                         }
+                        /*
                         Button(
                             onClick = {
                                 Toast.makeText(
@@ -217,10 +243,12 @@ fun Anuncio(navController: NavController, viewModel: InclusipetViewModel, modifi
                             shape = RoundedCornerShape(12.dp)
                         ) {
                             Text(
-                                text = "Escolher Imagens",
+                                text = "Visualizar",
                                 style = buttonStyle
                             )
                         }
+
+                         */
                     }
 
                     Column(
@@ -264,6 +292,9 @@ fun Anuncio(navController: NavController, viewModel: InclusipetViewModel, modifi
                                     shape = RoundedCornerShape(14.dp)
                                 )
                                 .padding(20.dp, 12.dp),
+                            keyboardOptions = KeyboardOptions(
+                                keyboardType = KeyboardType.Number
+                            ),
                             value = idade,
                             onValueChange = { idade = it},
                             textStyle = labelStyle,
@@ -272,6 +303,7 @@ fun Anuncio(navController: NavController, viewModel: InclusipetViewModel, modifi
                         )
                     }
                     Column(
+                        modifier = Modifier.fillMaxWidth(),
                         verticalArrangement = Arrangement.spacedBy(4.dp),
                     ) {
                         Text(
@@ -279,21 +311,9 @@ fun Anuncio(navController: NavController, viewModel: InclusipetViewModel, modifi
                             text = "Especie",
                             style = labelStyle
                         )
-                        BasicTextField(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .border(
-                                    width = 2.dp,
-                                    color = colorResource(R.color.purple_100),
-                                    shape = RoundedCornerShape(14.dp)
-                                )
-                                .padding(20.dp, 12.dp),
-                            value = especie,
-                            onValueChange = { especie = it},
-                            textStyle = labelStyle,
-                            singleLine = true,
-                            cursorBrush = Brush.verticalGradient(listOf(Purple100, Purple100)),
-                        )
+                        DropdownMenuBox(listaEspecie) {
+                            especie = it
+                        }
                     }
                     Column(
                         verticalArrangement = Arrangement.spacedBy(4.dp),
@@ -303,21 +323,9 @@ fun Anuncio(navController: NavController, viewModel: InclusipetViewModel, modifi
                             text = "Porte",
                             style = labelStyle
                         )
-                        BasicTextField(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .border(
-                                    width = 2.dp,
-                                    color = colorResource(R.color.purple_100),
-                                    shape = RoundedCornerShape(14.dp)
-                                )
-                                .padding(20.dp, 12.dp),
-                            value = porte,
-                            onValueChange = { porte = it},
-                            textStyle = labelStyle,
-                            singleLine = true,
-                            cursorBrush = Brush.verticalGradient(listOf(Purple100, Purple100)),
-                        )
+                        DropdownMenuBox(listaPorte) {
+                            porte = it
+                        }
                     }
                     Column(
                         verticalArrangement = Arrangement.spacedBy(4.dp),
@@ -327,21 +335,9 @@ fun Anuncio(navController: NavController, viewModel: InclusipetViewModel, modifi
                             text = "Sexo",
                             style = labelStyle
                         )
-                        BasicTextField(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .border(
-                                    width = 2.dp,
-                                    color = colorResource(R.color.purple_100),
-                                    shape = RoundedCornerShape(14.dp)
-                                )
-                                .padding(20.dp, 12.dp),
-                            value = sexo,
-                            onValueChange = { sexo = it},
-                            textStyle = labelStyle,
-                            singleLine = true,
-                            cursorBrush = Brush.verticalGradient(listOf(Purple100, Purple100)),
-                        )
+                        DropdownMenuBox(listaSexo) {
+                            sexo = it
+                        }
                     }
 
                     Column(
@@ -352,21 +348,9 @@ fun Anuncio(navController: NavController, viewModel: InclusipetViewModel, modifi
                             text = "Castrado?",
                             style = labelStyle
                         )
-                        BasicTextField(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .border(
-                                    width = 2.dp,
-                                    color = colorResource(R.color.purple_100),
-                                    shape = RoundedCornerShape(14.dp)
-                                )
-                                .padding(20.dp, 12.dp),
-                            value = castrado,
-                            onValueChange = { castrado = it},
-                            textStyle = labelStyle,
-                            singleLine = true,
-                            cursorBrush = Brush.verticalGradient(listOf(Purple100, Purple100)),
-                        )
+                        DropdownMenuBox(listaCastrado) {
+                            castrado = it
+                        }
                     }
                     Column(
                         verticalArrangement = Arrangement.spacedBy(4.dp),
@@ -396,24 +380,37 @@ fun Anuncio(navController: NavController, viewModel: InclusipetViewModel, modifi
                     Button(
                         onClick = {
 
-                            if(nome.isEmpty() || idade.isEmpty() || especie.isEmpty() || porte.isEmpty() || sexo.isEmpty() || castrado.isEmpty() || descricao.isEmpty()){
+                            if(nome.isEmpty() || idade.isEmpty() || especie == "" || porte == "" || sexo == "" || castrado == "" || descricao.isEmpty()){
                                 Toast.makeText(mainActivity, "Preencha todos os campos", Toast.LENGTH_SHORT).show()
                             }else {
                                 if (selectedImageUriList.size < 4) {
                                     Toast.makeText(mainActivity, "Selecione 4 imagens", Toast.LENGTH_SHORT).show()
-                                }else{
-                                    adocao.imagemUri1 = selectedImageUriList[0].toString()
-                                    adocao.imagemUri2 = selectedImageUriList[1].toString()
-                                    adocao.imagemUri3 = selectedImageUriList[2].toString()
-                                    adocao.imagemUri4 = selectedImageUriList[3].toString()
-                                    adocao.idade = idade.toInt()
-                                    adocao.castrado = castrado.toBoolean()
-
-
-                                    Toast.makeText(mainActivity, "Anuncio criado com sucesso!", Toast.LENGTH_SHORT).show()
-                                    viewModel.upsertAdocao(adocao)
-                                    navController.navigate(Routes.perfil)
                                 }
+                                    else{
+                                        if(idade.toIntOrNull() == null){
+                                            Toast.makeText(mainActivity, "Digite um número no campo idade", Toast.LENGTH_SHORT).show()
+                                        }
+                                        else{
+                                            if(idade.toInt() <= 0){
+                                                Toast.makeText(mainActivity, "Digite um número positivo no campo idade", Toast.LENGTH_SHORT).show()
+                                            }
+                                            else{
+                                                adocao.imagemUri1 = selectedImageUriList[0].toString()
+                                                adocao.imagemUri2 = selectedImageUriList[1].toString()
+                                                adocao.imagemUri3 = selectedImageUriList[2].toString()
+                                                adocao.imagemUri4 = selectedImageUriList[3].toString()
+                                                adocao.idade = idade.toInt()
+                                                if(castrado == "Sim"){
+                                                    adocao.castrado = true
+                                                }
+                                                Toast.makeText(mainActivity, "Anuncio criado com sucesso!", Toast.LENGTH_SHORT).show()
+                                                viewModel.upsertAdocao(adocao)
+                                                navController.navigate(Routes.adote)
+                                            }
+                                        }
+
+                                    }
+
                             }
                         },
                         modifier = Modifier.size(width = 180.dp, height = 38.dp),
@@ -431,3 +428,86 @@ fun Anuncio(navController: NavController, viewModel: InclusipetViewModel, modifi
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun DropdownMenuBox(itens: List<String>, valor: (String) -> Unit) {
+    val context = LocalContext.current
+    val isDropDownExpanded = remember {
+        mutableStateOf(false)
+    }
+    val itemPosition = remember {
+        mutableStateOf(0)
+    }
+
+    var componentWidth by remember { mutableStateOf(0.dp) }
+
+    // get local density from composable
+    val density = LocalDensity.current
+        Box (
+            modifier = Modifier
+                .fillMaxWidth()
+                .border(
+                    width = 2.dp,
+                    color = colorResource(R.color.purple_100),
+                    shape = RoundedCornerShape(14.dp)
+                )
+                .onGloballyPositioned {
+                    componentWidth = with(density) {
+                        it.size.width.toDp()
+                    }
+                }
+
+                ,
+        ) {
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .clickable {
+                    isDropDownExpanded.value = true
+                }.fillMaxWidth().padding(20.dp, 10.dp)
+            ) {
+                Text(
+                    text = itens[itemPosition.value],
+                    style = labelStyle
+                )
+                Image(
+                    painter = painterResource(R.drawable.arrow_down),
+                    contentDescription = "DropDown Icon"
+                )
+            }
+            DropdownMenu(
+                modifier = Modifier
+                    .width(componentWidth)
+                    .background(colorResource(R.color.white)),
+
+                expanded = isDropDownExpanded.value,
+                onDismissRequest = {
+                    isDropDownExpanded.value = false
+                }) {
+                itens.forEachIndexed { index, username ->
+                    DropdownMenuItem(
+                        text = {
+                            Text(
+                                text = username,
+                                style = labelStyle
+                            )
+                         },
+                        onClick = {
+                            valor(itens[itemPosition.value])
+                            isDropDownExpanded.value = false
+                            itemPosition.value = index
+                        }
+                    )
+                    /*
+                    HorizontalDivider(
+                        color = colorResource(R.color.purple_100),
+                        thickness = 1.5.dp,
+                    )
+
+                     */
+                }
+            }
+        }
+
+}

@@ -34,6 +34,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -58,6 +59,7 @@ import androidx.core.net.toUri
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.inclusipet.roomDB.Adocao
+import com.example.inclusipet.roomDB.Usuario
 import com.example.inclusipet.ui.theme.GradientPurple
 import com.example.inclusipet.ui.theme.GradientPurple50p
 import com.example.inclusipet.ui.theme.InclusipetTheme
@@ -65,23 +67,75 @@ import com.example.inclusipet.ui.theme.inter
 import com.example.inclusipet.ui.theme.titleStyle
 import com.example.inclusipet.ui.theme.topBarStyle
 import com.example.inclusipet.viewModel.InclusipetViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.launch
 import kotlin.math.absoluteValue
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Informacoes(navController: NavController, viewModel: InclusipetViewModel, modifier: Modifier = Modifier, index: Int, mainActivity: MainActivity) {
+    var usuario by remember {
+        mutableStateOf(
+            Usuario(
+                email = "",
+                senha = "",
+                nome = "",
+                datanasc = "",
+                cpf = "",
+                telefone = "",
+                endereco = "",
+                logado = false
+            )
+        )
+    }
+    var usuarioList by remember {
+        mutableStateOf(listOf<Usuario>())
+    }
+
+    var adocao by remember{
+        mutableStateOf(
+            Adocao(
+                nome = "",
+                idade = 0,
+                especie = "",
+                porte = "",
+                sexo = "",
+                castrado = false,
+                endereco = "",
+                descricao = "",
+                imagemUri1 = "",
+                imagemUri2 = "",
+                imagemUri3 = "",
+                imagemUri4 = "",
+                adotado = false,
+                idCliente = 99999,
+            )
+        )
+    }
+    var adocaoList by remember{
+        mutableStateOf(listOf<Adocao>())
+    }
+    LaunchedEffect(
+        key1 = true
+    ) {
+        CoroutineScope(Main).launch {
+            adocaoList = viewModel.getAdocaoCod(viewModel.getSelectedAdocao())
+            if (adocaoList.isEmpty()) {
+                navController.navigate(Routes.adote)
+            } else {
+                adocao = adocaoList[0]
+                usuarioList = viewModel.getIdUsuario(adocao.idCliente)
+                usuario = usuarioList[0]
+
+            }
+        }
+    }
+
     InclusipetTheme(darkTheme = false, dynamicColor = false) {
         val layoutDirection = LocalLayoutDirection.current
-        var adocaoList by remember{
-            mutableStateOf(listOf<Adocao>())
-        }
 
-        viewModel.getAdocaoCod(viewModel.getSelectedAdocao()).observe(mainActivity) {
-            adocaoList = it
-        }
-
-        var adocao = adocaoList[0]
 
         Scaffold(
             modifier = Modifier
@@ -121,58 +175,54 @@ fun Informacoes(navController: NavController, viewModel: InclusipetViewModel, mo
         ) {
             it.calculateTopPadding()
             val photos = listOf(
-                adocao.imagemUri1.toUri(),
-                adocao.imagemUri2.toUri(),
-                adocao.imagemUri3.toUri(),
-                adocao.imagemUri4.toUri()
+                R.drawable.info_placeholder1,
+                R.drawable.info_placeholder2,
+                R.drawable.info_placeholder3,
+                R.drawable.info_placeholder4
             )
             val pagerState = rememberPagerState(
                 pageCount = {
-                4
-            })
-            var selectedImageUriList by remember {
-                mutableStateOf<List<Uri>>(photos)
-            }
+                    4
+                })
 
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(0.dp,0.dp,0.dp, 100.dp)
-                        .verticalScroll(rememberScrollState()),
-                    horizontalAlignment = Alignment.Start,
-                ) {
-                    /*
-                    HorizontalPager(
-                        modifier = Modifier.fillMaxWidth().padding(0.dp, 60.dp, 0.dp, 0.dp).height(300.dp),
-                        state = pagerState,
-                        key = { selectedImageUriList[it] }
-                    ) { index ->
-                        AsyncImage(
-                            model = selectedImageUriList[index],
-                            contentDescription = null,
-                            contentScale = ContentScale.Crop,
-                            modifier = Modifier.fillMaxSize().drawWithCache {
-                                val gradient = Brush.verticalGradient(
-                                    colors = listOf(Color.Transparent, GradientPurple50p),
-                                    startY = size.height / 3,
-                                    endY = size.height
-                                )
-                                onDrawWithContent {
-                                    drawContent()
-                                    drawRect(gradient)
-                                }
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(0.dp,0.dp,0.dp, 100.dp)
+                    .verticalScroll(rememberScrollState()),
+                horizontalAlignment = Alignment.Start,
+            ) {
+                HorizontalPager(
+                    modifier = Modifier.fillMaxWidth().padding(0.dp, 60.dp, 0.dp, 0.dp).height(300.dp),
+                    state = pagerState,
+                    key = { photos[it] }
+                ) { index ->
+                    Image(
+                        painter = painterResource(photos[index]),
+                        contentDescription = null,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier.fillMaxSize().drawWithCache {
+                            val gradient = Brush.verticalGradient(
+                                colors = listOf(Color.Transparent, GradientPurple50p),
+                                startY = size.height / 3,
+                                endY = size.height
+                            )
+                            onDrawWithContent {
+                                drawContent()
+                                drawRect(gradient)
                             }
-                        )
-
-                    }
-                    HorizontalPagerIndicator(
-                        pageCount = 4,
-                        currentPage = pagerState.currentPage,
-                        targetPage = pagerState.targetPage,
-                        currentPageOffsetFraction = pagerState.currentPageOffsetFraction
+                        }
                     )
 
-                     */
+                }
+                HorizontalPagerIndicator(
+                    pageCount = 4,
+                    currentPage = pagerState.currentPage,
+                    targetPage = pagerState.targetPage,
+                    currentPageOffsetFraction = pagerState.currentPageOffsetFraction
+                )
+
+
                     Column( modifier = Modifier
                         .fillMaxSize()
                         .padding(30.dp,20.dp,30.dp, 60.dp),
@@ -180,11 +230,11 @@ fun Informacoes(navController: NavController, viewModel: InclusipetViewModel, mo
                     )
                     {
                         Text(
-                            text = "Fonseca",
+                            text = adocao.nome,
                             style = titleStyle
                         )
                         Text(
-                            text = "Canino | Macho | 15 Anos | Grande | Castrado",
+                            text = "${adocao.especie} | ${adocao.sexo} | ${adocao.idade} | ${adocao.porte} | "+ if (adocao.castrado) "Castrado" else "Não castrado",
                             style = TextStyle(
                                 color = colorResource(R.color.grey_100),
                                 fontSize = 13.sp,
@@ -193,12 +243,12 @@ fun Informacoes(navController: NavController, viewModel: InclusipetViewModel, mo
                             )
                         )
                         Text(
-                            text = "Quem é Fonseca?",
+                            text = "Quem é ${adocao.nome}?",
                             fontSize = 26.sp,
                             style = titleStyle
                         )
                         Text(
-                            text = "Um cachorro de olhos marrons claros, de porte médio, velho, de pelagem curta, branca e com manchas pretas pelo seu corpo.",
+                            text = adocao.descricao,
                             fontSize = 13.sp,
                             style = TextStyle(
                                 color = colorResource(R.color.grey_400),
@@ -214,7 +264,7 @@ fun Informacoes(navController: NavController, viewModel: InclusipetViewModel, mo
                         )
                         Column(){
                             Text(
-                                text = "Miguel Yudi Baba",
+                                text = usuario.nome,
                                 fontSize = 13.sp,
                                 style = TextStyle(
                                     color = colorResource(R.color.grey_400),
@@ -224,7 +274,7 @@ fun Informacoes(navController: NavController, viewModel: InclusipetViewModel, mo
                                 )
                             )
                             Text(
-                                text = "(11) 11111-1111",
+                                text = usuario.telefone,
                                 fontSize = 13.sp,
                                 style = TextStyle(
                                     color = colorResource(R.color.grey_400),
@@ -234,7 +284,7 @@ fun Informacoes(navController: NavController, viewModel: InclusipetViewModel, mo
                                 )
                             )
                             Text(
-                                text = "Av. Aguia de Haia - SP",
+                                text = usuario.endereco,
                                 fontSize = 13.sp,
                                 style = TextStyle(
                                     color = colorResource(R.color.grey_400),

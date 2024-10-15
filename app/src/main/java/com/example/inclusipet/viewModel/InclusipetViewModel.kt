@@ -15,17 +15,22 @@ class InclusipetViewModel(private val repository: Repository): ViewModel()  {
     private var selectedAdocao = 0
 
     fun updateSelectedAdocao(adocao: Int) {
-        selectedAdocao = adocao
+        this.selectedAdocao = adocao
     }
 
     fun getSelectedAdocao(): Int {
-        return selectedAdocao
+        return this.selectedAdocao
     }
 
     fun getAdocaoUsuario(idCliente: Int) = repository.getAdocaoUsuario(idCliente).asLiveData(viewModelScope.coroutineContext)
     fun getAllAdocao() = repository.getAllAdocao().asLiveData(viewModelScope.coroutineContext)
     fun getInfoAdocao(idCliente: Int, idAdocao: Int) = repository.getInfoAdocao(idCliente, idAdocao)
-    fun getAdocaoCod(idAdocao: Int) = repository.getAdocaoCod(idAdocao).asLiveData(viewModelScope.coroutineContext)
+    suspend fun getAdocaoCod(idAdocao: Int): List<Adocao> {
+        val deferred: Deferred<List<Adocao>> = viewModelScope.async {
+            repository.getAdocaoCod(idAdocao)
+        }
+        return deferred.await()
+    }
 
     fun upsertAdocao(adocao: Adocao) {
         viewModelScope.launch{
@@ -70,6 +75,12 @@ class InclusipetViewModel(private val repository: Repository): ViewModel()  {
     suspend fun verificarLogin():List<Usuario> {
         val deferred: Deferred<List<Usuario>> = viewModelScope.async {
             repository.verificarLogin()
+        }
+        return deferred.await()
+    }
+    suspend fun getIdUsuario(idCliente: Int): List<Usuario> {
+        val deferred: Deferred<List<Usuario>> = viewModelScope.async {
+            repository.getIdUsuario(idCliente)
         }
         return deferred.await()
     }

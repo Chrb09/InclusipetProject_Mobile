@@ -4,9 +4,10 @@
     <color name="pink_100">#B84EFF</color>
     <color name="grey_100">#404040</color>
     <color name="grey_400">#232323</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="white">#FFFBFE</color>
     <color name="red">#FF4848</color>
     <color name="purple_300">#403898</color>
     <color name="purple_200">#4F45B0</color>
     <color name="white_200">#DEDEDE</color>
+    <color name="green_100">#4CB062</color>
 </resources>

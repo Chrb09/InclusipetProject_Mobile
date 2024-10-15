@@ -20,7 +20,9 @@ class Repository(private val db: InclusipetDataBase) {
 
     fun getAllAdocao() = db.adocaoDao().getAllAdocao()
 
-    fun getAdocaoCod(idAdocao: Int) = db.adocaoDao().getAdocaoCod(idAdocao)
+    suspend fun getAdocaoCod(idAdocao: Int): List<Adocao> {
+        return db.adocaoDao().getAdocaoCod(idAdocao)
+    }
 
     suspend fun upsertUsuario(usuario: Usuario) {
         db.usuarioDao().upsertUsuario(usuario)
@@ -43,5 +45,9 @@ class Repository(private val db: InclusipetDataBase) {
     suspend fun verificarLogin(): List<Usuario>{
         return db.usuarioDao().verificarLogin()
     }
+    suspend fun getIdUsuario(idCliente: Int): List<Usuario>{
+        return db.usuarioDao().getIdUsuario(idCliente)
+    }
+
 
 }

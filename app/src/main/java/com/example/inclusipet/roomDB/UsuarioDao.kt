@@ -21,6 +21,9 @@ interface UsuarioDao{
     @Query("SELECT * FROM usuario WHERE email = :email")
     suspend fun verificarEmail(email: String): List<Usuario>
 
+    @Query("SELECT * FROM usuario WHERE idCliente = :idCliente")
+    suspend fun getIdUsuario(idCliente: Int): List<Usuario>
+
     @Query("SELECT * FROM usuario WHERE logado = true")
     suspend fun verificarLogin(): List<Usuario>
 
