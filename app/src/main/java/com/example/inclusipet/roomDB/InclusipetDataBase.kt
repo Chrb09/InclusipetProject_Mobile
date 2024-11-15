@@ -9,7 +9,6 @@ import androidx.room.RoomDatabase
         Usuario::class
                ],
     version = 1,
-
 )
 
 abstract class InclusipetDataBase: RoomDatabase() {
