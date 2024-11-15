@@ -53,6 +53,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -65,6 +66,8 @@ import androidx.core.net.toUri
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
+import coil.compose.rememberAsyncImagePainter
+import coil.request.ImageRequest
 import com.example.inclusipet.roomDB.Adocao
 import com.example.inclusipet.ui.theme.GradientPurple
 import com.example.inclusipet.ui.theme.InclusipetTheme
@@ -124,6 +127,8 @@ fun Adote(navController: NavController, viewModel: InclusipetViewModel, modifier
                     .padding(30.dp,115.dp,30.dp, 0.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
+
+
                 if (adocaoList.isEmpty()){
                     Text(
                         text = "Nenhuma adoção cadastrada!",
@@ -137,7 +142,7 @@ fun Adote(navController: NavController, viewModel: InclusipetViewModel, modifier
                             .padding(0.dp,0.dp,0.dp, 110.dp),
                     ){
                         items(adocaoList){ adocao ->
-                            adoptCard(adocao.idAdocao, adocao.nome, adocao.endereco, adocao.descricao, adocao.idade.toString(), adocao.sexo, adocao.castrado.toString(), adocao.imagemUri1.toUri(), navController, viewModel)
+                            adoptCard(adocao.idAdocao, adocao.nome, adocao.endereco, adocao.descricao, adocao.idade.toString(), adocao.sexo, adocao.castrado.toString(), adocao.imagemURL, navController, viewModel)
                         }
                     }
                     }
@@ -263,11 +268,8 @@ fun TabBarIconView(
     }
 
 @Composable
-fun adoptCard(idAdocao: Int, nome: String, endereco: String, descricao: String, idade: String, sexo: String, castrado: String, image: Uri, navController: NavController, viewModel: InclusipetViewModel){
+fun adoptCard(idAdocao: Int, nome: String, endereco: String, descricao: String, idade: String, sexo: String, castrado: String, image: String, navController: NavController, viewModel: InclusipetViewModel){
     var sizeImage by remember { mutableStateOf(IntSize.Zero) }
-    var selectedImageUri by remember {
-        mutableStateOf<Uri?>(image)
-    }
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -284,16 +286,13 @@ fun adoptCard(idAdocao: Int, nome: String, endereco: String, descricao: String, 
 
         ){
         Image(
-            painter = painterResource(R.drawable.info_placeholder1),
+            if(image == "") painterResource(R.drawable.placeholder) else rememberAsyncImagePainter(image),
             contentDescription = "",
             contentScale = ContentScale.Crop,
             modifier = Modifier.onGloballyPositioned {
                 sizeImage = it.size
             }.fillMaxSize()
         )
-
-
-
 
         Box(modifier = Modifier.matchParentSize().background(
             Brush.verticalGradient(

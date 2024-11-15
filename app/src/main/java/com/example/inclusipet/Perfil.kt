@@ -52,6 +52,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
 import androidx.navigation.NavController
+import coil.compose.rememberAsyncImagePainter
 import com.example.inclusipet.roomDB.Adocao
 import com.example.inclusipet.roomDB.Usuario
 import com.example.inclusipet.ui.theme.InclusipetTheme
@@ -230,8 +231,6 @@ fun Perfil(navController: NavController, viewModel: InclusipetViewModel, modifie
 
 @Composable
 fun adoptCardProfile(adocao: Adocao, navController: NavController, viewModel: InclusipetViewModel, mainActivity: MainActivity, shouldShowDialog: MutableState<Boolean>){
-
-
     if (shouldShowDialog.value) {
         MyAlertDialog(shouldShowDialog = shouldShowDialog, adocao, viewModel, mainActivity)
     }
@@ -239,7 +238,8 @@ fun adoptCardProfile(adocao: Adocao, navController: NavController, viewModel: In
         modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 20.dp),
         verticalArrangement = Arrangement.spacedBy(6.dp),
     ) {
-        Image(painter = painterResource(R.drawable.info_placeholder1),
+        Image(
+            if(adocao.imagemURL == "") painterResource(R.drawable.placeholder) else rememberAsyncImagePainter(adocao.imagemURL),
             contentDescription = "",
             contentScale = ContentScale.Crop,
             modifier = Modifier.fillMaxSize().height(180.dp).clip(shape = RoundedCornerShape(15.dp))

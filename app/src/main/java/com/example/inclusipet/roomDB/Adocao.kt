@@ -14,10 +14,7 @@ data class Adocao (
     var castrado: Boolean,
     var endereco: String,
     val descricao: String,
-    var imagemUri1: String,
-    var imagemUri2: String,
-    var imagemUri3: String,
-    var imagemUri4: String,
+    var imagemURL: String,
     var adotado: Boolean,
     val idCliente: Int,
 

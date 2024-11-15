@@ -58,6 +58,7 @@ import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
+import coil.compose.rememberAsyncImagePainter
 import com.example.inclusipet.roomDB.Adocao
 import com.example.inclusipet.roomDB.Usuario
 import com.example.inclusipet.ui.theme.GradientPurple
@@ -105,10 +106,7 @@ fun Informacoes(navController: NavController, viewModel: InclusipetViewModel, mo
                 castrado = false,
                 endereco = "",
                 descricao = "",
-                imagemUri1 = "",
-                imagemUri2 = "",
-                imagemUri3 = "",
-                imagemUri4 = "",
+                imagemURL = "",
                 adotado = false,
                 idCliente = 99999,
             )
@@ -175,14 +173,15 @@ fun Informacoes(navController: NavController, viewModel: InclusipetViewModel, mo
         ) {
             it.calculateTopPadding()
             val photos = listOf(
-                R.drawable.info_placeholder1,
-                R.drawable.info_placeholder2,
-                R.drawable.info_placeholder3,
-                R.drawable.info_placeholder4
+                adocao.imagemURL
+            )
+
+            val photosPlaceholder = listOf(
+                R.drawable.placeholder
             )
             val pagerState = rememberPagerState(
                 pageCount = {
-                    4
+                    1
                 })
 
             Column(
@@ -198,7 +197,7 @@ fun Informacoes(navController: NavController, viewModel: InclusipetViewModel, mo
                     key = { photos[it] }
                 ) { index ->
                     Image(
-                        painter = painterResource(photos[index]),
+                        if(adocao.imagemURL == "") painterResource(photosPlaceholder[index]) else rememberAsyncImagePainter(photos[index]),
                         contentDescription = null,
                         contentScale = ContentScale.Crop,
                         modifier = Modifier.fillMaxSize().drawWithCache {
@@ -216,7 +215,7 @@ fun Informacoes(navController: NavController, viewModel: InclusipetViewModel, mo
 
                 }
                 HorizontalPagerIndicator(
-                    pageCount = 4,
+                    pageCount = 0,
                     currentPage = pagerState.currentPage,
                     targetPage = pagerState.targetPage,
                     currentPageOffsetFraction = pagerState.currentPageOffsetFraction
