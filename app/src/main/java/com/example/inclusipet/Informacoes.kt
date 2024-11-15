@@ -233,7 +233,7 @@ fun Informacoes(navController: NavController, viewModel: InclusipetViewModel, mo
                             style = titleStyle
                         )
                         Text(
-                            text = "${adocao.especie} | ${adocao.sexo} | ${adocao.idade} | ${adocao.porte} | "+ if (adocao.castrado) "Castrado" else "Não castrado",
+                            text = "${adocao.especie} | ${adocao.sexo} | ${adocao.idade} Anos | ${adocao.porte} | "+ if (adocao.castrado) "Castrado" else "Não castrado",
                             style = TextStyle(
                                 color = colorResource(R.color.grey_100),
                                 fontSize = 13.sp,

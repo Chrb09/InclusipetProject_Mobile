@@ -351,7 +351,7 @@ fun adoptCard(idAdocao: Int, nome: String, endereco: String, descricao: String, 
 
                 ){
                     Text(
-                        text = idade,
+                        text = "${idade} Anos",
                         style = TextStyle(
                             color = colorResource(R.color.purple_100),
                             fontSize = 12.sp,
@@ -359,6 +359,7 @@ fun adoptCard(idAdocao: Int, nome: String, endereco: String, descricao: String, 
                             fontWeight = FontWeight.SemiBold
                             )
                     )
+
                 }
                 Box(
                     modifier = Modifier

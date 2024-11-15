@@ -32,6 +32,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -374,7 +375,7 @@ fun DropdownMenuBox(itens: List<String>, valor: (String) -> Unit) {
         mutableStateOf(false)
     }
     val itemPosition = remember {
-        mutableStateOf(0)
+        mutableIntStateOf(0)
     }
 
     var componentWidth by remember { mutableStateOf(0.dp) }
@@ -432,9 +433,9 @@ fun DropdownMenuBox(itens: List<String>, valor: (String) -> Unit) {
                             )
                          },
                         onClick = {
-                            valor(itens[itemPosition.value])
                             isDropDownExpanded.value = false
                             itemPosition.value = index
+                            valor(itens[itemPosition.value])
                         }
                     )
                     /*
