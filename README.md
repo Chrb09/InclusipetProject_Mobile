@@ -1,6 +1,6 @@
 ![Logo](https://github.com/Chrb09/InclusipetProject_Mobile/blob/master/app/src/main/res/drawable-nodpi/banner.png)
 
-[**Inclusipet**](https://drive.google.com/file/d/1X5gTYyRNvY_xTznlJKeusi64kDknuwfW/view?usp=sharing) é um site desenvolvido para um projeto que dura 2 anos ( 2023 - 2024 ) com uma empresa parceira no curso de Desenvolvimento de Sistemas AMS da Etec da Zona Leste. <br> <br>
+[**Inclusipet**](https://github.com/Chrb09/InclusipetProject) é um site desenvolvido para um projeto que dura 2 anos ( 2023 - 2024 ) com uma empresa parceira no curso de Desenvolvimento de Sistemas AMS da Etec da Zona Leste. <br> <br>
 Este repositório faz parte desse projeto, cobrindo a parte da [**aplicação Mobile**](https://drive.google.com/file/d/1X5gTYyRNvY_xTznlJKeusi64kDknuwfW/view?usp=sharing) <br>
 <br>
 
