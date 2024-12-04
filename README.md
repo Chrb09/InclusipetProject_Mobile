@@ -132,8 +132,8 @@ O aplicativo foi criado utilizando [ **Figma**](https://www.figma.com/file/L4PJE
       </td>
       </td>
       <td align="center">
-        <a href="https://github.com/GiovannaAdantas">
-          <img src="https://avatars.githubusercontent.com/u/133404091?v=4" width="100px;" alt="Giovanna - Github"/><br>
+        <a href="https://github.com/GioAndradeD">
+          <img src="https://avatars.githubusercontent.com/u/182276752?v=4" width="100px;" alt="Giovanna - Github"/><br>
           <sub>
             <b>Giovanna</b>
           </sub> <br>
